@@ -45,16 +45,6 @@ const Map = () => {
     });
   }
 
-  useEffect( () => {
-    gaugeData.forEach( (data) => {
-      console.log(data.sourceInfo.siteName);
-      console.log(data.variable.variableName);
-      console.log(data.values[0].value[0].value);
-    })
-  }, [gaugeData])
-
-
-
 
     return (
         <MapContainer center={[40.0, -100.0]} zoom={4} scrollWheelZoom={true}>

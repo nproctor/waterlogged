@@ -9,15 +9,21 @@ interface Props {
     onSearch: (bounds: LatLngBounds) => void;
 }
 
+function getArea(bounds: LatLngBounds){
+    const height = bounds.getNorth() - bounds.getSouth();
+    const width = bounds.getEast() - bounds.getWest();
+    return (height * width);
+}
+
 const SearchAreaButton = (props: Props) => {
     const map = useMap();
 
     const onClick = () => {
-        if (map.getZoom() < 9){
+        const bounds = map.getBounds();
+        if (getArea(bounds) > 25){
             toast.error("Zoom in to search this area!");
             return;
         }
-        const bounds = map.getBounds();
         props.onSearch(bounds);
     }
 
