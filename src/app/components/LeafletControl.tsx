@@ -17,11 +17,11 @@ interface Props {
 const createControlLayer = (props : PropsWithChildren<Props>) => {
     const controlInstance = new L.Control({position: props.position});
     controlInstance.onAdd = () => {
-        const button = L.DomUtil.create("div", "leaflet-control leaflet-bar");
+        const button = L.DomUtil.create("div", `leaflet-control leaflet-bar ${props.className}`);
         L.DomEvent.disableClickPropagation(button);
         L.DomEvent.disableScrollPropagation(button);
         button.innerHTML = renderToStaticMarkup(
-            <a className={props.className}>{props.children}</a>
+            <a>{props.children}</a>
         );
         button.onclick = props.onClick;
         return button;

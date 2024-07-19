@@ -10,14 +10,21 @@ const CurrentLocationButton = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const map = useMapEvents({
-        locationfound(loc) {
-        map.flyTo(loc.latlng, 15, { duration: 2});
-        setIsLoading(false);
+        locationfound: (loc) => {
+            map.flyTo(loc.latlng, 10, { duration: 2});
+            setIsLoading(false);
         }
     });
 
+    const onClick = () => {
+        if (!isLoading){
+            setIsLoading(true);
+            map.locate();
+        }
+    }
+
     return (
-    <LeafletControl className={"leaflet-current-position-control"} position={"topleft"} onClick={() => {map.locate()}}>
+    <LeafletControl className={"leaflet-current-position-control"} position={"topleft"} onClick={onClick}>
         <FaLocationDot style={{height: "20px", width:"20px"}}/>
     </LeafletControl>
   );
