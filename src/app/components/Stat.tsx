@@ -1,25 +1,20 @@
 import { decode } from 'html-entities';
+import { WaterData } from '@/app/types/types'
 
 interface Props {
-    name : string,
-    dataPair : {
-        variable : string,
-        variableCode : number,
-        value : string,
-        unit : string,
-    }[]
+    data : WaterData;
 }
 
 const Stat = (props: Props) => {
     return (
         <div>
-            <b>{props.name}</b>
+            <b>{props.data.name}</b>
             <br/>
-            {props.dataPair.map( (pair) => 
-            <p key={pair.variableCode}>
-                <b>{decode(pair.variable)}:</b> 
-                {pair.value}
-            </p>)}
+            {props.data.variables.map ( (variable) =>
+                <p key={variable.oid}>
+                <b>{decode(variable.variableName)}:</b> {variable.value}
+                </p>
+            )}
         </div>
     )
 }

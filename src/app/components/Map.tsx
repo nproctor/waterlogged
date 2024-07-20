@@ -31,7 +31,7 @@ const Map = () => {
     const promise = new Promise<void>((resolve, reject) => {
       getWaterServicesInstantaneousValues(bBox)
       .then((res) => {
-        setGaugeData(res.value.timeSeries);
+        setGaugeData(res);
         resolve();
       })
       .catch(() => reject())
@@ -55,16 +55,11 @@ const Map = () => {
           <CurrentLocationButton/>
           <SearchAreaButton onSearch ={getGaugeData}/>
           {gaugeData.map( (data) => <Marker 
-                                      key={data.sourceInfo.siteName}
-                                      position={[data.sourceInfo.geoLocation.geogLocation.latitude,
-                                                 data.sourceInfo.geoLocation.geogLocation.longitude]}>
+                                      key={data.id}
+                                      position={[data.geoLocation.latitude,
+                                                 data.geoLocation.longitude]}>
                                       <Popup>
-                                        <Stat name={data.sourceInfo.siteName}
-                                              dataPair={[{
-                                                variable: data.variable.variableName,
-                                                variableCode: data.variable.oid,
-                                                value: data.values[0].value[0].value,
-                                                unit: data.variable.unit.unitCode}]} />
+                                        <Stat data={data}/>
                                       </Popup>
                                     </Marker>)}
         </MapContainer>

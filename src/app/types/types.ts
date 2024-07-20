@@ -1,13 +1,16 @@
 
-export interface WaterDataResponse {
+export interface WaterServicesResponse {
     value: {
-        timeSeries: WaterData[]
+        timeSeries: WaterServicesResponseData[]
     }
 }
 
-export interface WaterData {
+export interface WaterServicesResponseData {
     sourceInfo: {
         siteName: string,
+        siteCode : {
+            value: string,
+        }[]
         geoLocation : {
             geogLocation: {
                 latitude: number,
@@ -30,4 +33,22 @@ export interface WaterData {
         }[]
     
     }[]
+}
+
+export interface WaterData {
+    name : string;
+    id : number,
+    geoLocation : {
+        latitude : number,
+        longitude : number,
+    }
+    variables: WaterDataVariable[],
+}
+
+export interface WaterDataVariable {
+    variableName : string,
+    oid : number,
+    unit : string,
+    value : number,
+    dateTime : Date,
 }
