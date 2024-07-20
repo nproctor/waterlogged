@@ -17,13 +17,17 @@ const simplifyResponse = async (response : WaterServicesResponse) : Promise<Wate
         const data : WaterData[] = [];
         let id : number | null = null;
         response.value.timeSeries.forEach( (point) => {
-            if (id === parseInt(point.sourceInfo.siteCode[0].value)){
-                data[data.length - 1].variables.push(mapVariableSchema(point));
+            try {
+                if (id === parseInt(point.sourceInfo.siteCode[0].value)){
+                    data[data.length - 1].variables.push(mapVariableSchema(point));
+                }
+                else {
+                    const simplified = mapSchema(point);
+                    id = simplified.id;
+                    data.push(simplified);
+                }
             }
-            else {
-                const simplified = mapSchema(point);
-                id = simplified.id;
-                data.push(simplified);
+            catch (err) {   
             }
         })
         resolve(data);
