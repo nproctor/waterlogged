@@ -6,6 +6,23 @@ body {
     --color-water-min: #e33535aa;
 }
 
+.details-loading{
+    align-content: center;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.details-loading span{
+    margin: auto;
+}
+
+.details-site-overview {
+    margin: 10px;
+}
+
+
+
 .details-table td {
     background-color: #EEEEEE;
     padding: 5px;
@@ -30,6 +47,14 @@ body {
     padding-left: 5px;
 }
 
+.recharts-label {
+    font-weight: 800;
+    fill: black;
+    text-anchor: middle;
+}
 
+.recharts-legend-item-text {
+    font-weight: 800;
+}
 
 

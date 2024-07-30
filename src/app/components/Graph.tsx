@@ -8,8 +8,7 @@ const MINUTES_IN_DAY = 60 * 24;
 
 interface Props extends PropsWithChildren{
     title: string,
-    data: WaterData,
-    range?: [number, number],
+    data: WaterData
 }
 
 const xAxisFormatter = (timeInMinutes : number, index: number) => {
@@ -19,7 +18,7 @@ const xAxisFormatter = (timeInMinutes : number, index: number) => {
   }
   
 
-const Graph = ({title, data, range, children}: Props) => {
+const Graph = ({title, data, children}: Props) => {
 
 
     const timeMap = (x : Date) : number => {
@@ -29,7 +28,7 @@ const Graph = ({title, data, range, children}: Props) => {
 
     return (
         <ResponsiveContainer width="95%" height="95%">
-            <LineChart title={title} data={data.variable.values} margin={{top: 50, bottom: 50, left: 50, right: 100}}>
+            <LineChart title={title} data={data.variable.values} margin={{top: 20, bottom: 20, left: 20, right: 20}}>
                 <Line type="monotone" dataKey="value" stroke="black" />
                 <CartesianGrid stroke="#ccc" />
                 <XAxis dataKey={(v) => timeMap(v.dateTime)} 
@@ -38,10 +37,10 @@ const Graph = ({title, data, range, children}: Props) => {
                         type='number' 
                         domain={[0, MINUTES_IN_DAY]} 
                         ticks={Array.from({length:HOURS_IN_DAY}, (_,i) => i * MINUTES_IN_HOUR)}>
-                    <Label value="Time" position='bottom'/>
+                    <Label value="Time" position='bottom' color="black"/>
                 </XAxis>
-                <YAxis domain={range}>
-                    <Label value={data.variable.variableName} angle={-90} position='left'/>
+                <YAxis domain={[(dataMin : number) => (dataMin / 2), (dataMax : number) => (dataMax * 2)]}>
+                    <Label value={data.variable.variableName} angle={-90} position='left' color="black"/>
                 </YAxis>
                 {children}
                 <Tooltip content={<CustomTooltip yLabel={data.variable.variableName} xLabel={"Time"}/>} />
@@ -49,7 +48,7 @@ const Graph = ({title, data, range, children}: Props) => {
                                   {value:"High 75% - 95%", type:"circle", color:"var(--color-water-high)"},
                                   {value:"Normal 25% - 75%", type:"circle", color:"var(--color-water-normal)"},
                                   {value:"Low 5% - 25%", type:"circle", color:"var(--color-water-low)"},
-                                  {value:"Very Low < 5%", type:"circle", color:"var(--color-water-min)"}]} verticalAlign="top" height={30}/>
+                                  {value:"Very Low < 5%", type:"circle", color:"var(--color-water-min)"}]} verticalAlign="top" height={50}/>
             </LineChart>
         </ResponsiveContainer>);
 }

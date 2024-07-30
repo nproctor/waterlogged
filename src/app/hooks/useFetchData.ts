@@ -13,7 +13,8 @@ const useFetchData = (id: number) => {
         // 7 day daily values
         getSiteDailyValues(id, 7)
         .then((res) => {
-            setDailyValues(res)
+            setTimeout(() => setDailyValues(res), 10000)
+            
         })
 
         // Values since midnight
