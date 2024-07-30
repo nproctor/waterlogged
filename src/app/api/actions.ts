@@ -69,7 +69,7 @@ const individualResponse = async (response: WaterServicesResponse) : Promise<Wat
 const mapSchema = (point : WaterServicesResponseData) : WaterData => {
     const simplified : WaterData = {
         name : point.sourceInfo.siteName,
-        id : parseInt(point.sourceInfo.siteCode[0].value),
+        id : point.sourceInfo.siteCode[0].value,
         geoLocation : point.sourceInfo.geoLocation.geogLocation,
         variable: mapVariableSchema(point)
     }

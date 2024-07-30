@@ -8,7 +8,7 @@ interface Props {
 const MapStat = ({data}: Props) => {
     return (
         <div>
-            <Link href={`/details/${encodeURIComponent(data.id)}`}>
+            <Link href={`/details/${data.id}`}>
                 <b>{data.name}</b>
             </Link>
             <table className="leaflet-popup-table-stats">

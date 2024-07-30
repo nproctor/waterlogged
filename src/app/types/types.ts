@@ -37,7 +37,7 @@ export interface WaterServicesResponseData {
 
 export interface WaterData {
     name : string;
-    id : number,
+    id : string,
     geoLocation : {
         latitude : number,
         longitude : number,
