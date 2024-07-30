@@ -42,13 +42,27 @@ export interface WaterData {
         latitude : number,
         longitude : number,
     }
-    variables: WaterDataVariable[],
+    variable: WaterDataVariable,
 }
 
 export interface WaterDataVariable {
     variableName : string,
     oid : number,
     unit : string,
+    values : WaterDataVariableValue[],
+}
+
+export interface WaterDataVariableValue {
     value : number,
     dateTime : Date,
+}
+
+export interface WaterStatistic {
+    max: number,
+    min: number, 
+    p05: number,
+    p25: number,
+    p75: number,
+    p95: number
+
 }

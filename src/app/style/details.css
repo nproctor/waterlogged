@@ -1,0 +1,35 @@
+body {
+    --color-water-max: #1c2caaaa;
+    --color-water-high: #1286b0aa;
+    --color-water-normal: #32da56aa;
+    --color-water-low: #ebad42aa;
+    --color-water-min: #e33535aa;
+}
+
+.details-table td {
+    background-color: #EEEEEE;
+    padding: 5px;
+}
+
+.details-current-data {
+    height: 50vh;
+    width: 100vw;
+}
+
+.custom-tooltip {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.custom-tooltip .xlabel, .custom-tooltip .ylabel{
+    font-weight: 800;
+}
+
+.custom-tooltip .xvalue, .custom-tooltip .yvalue{
+    padding-left: 5px;
+}
+
+
+
+
