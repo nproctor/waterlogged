@@ -7,7 +7,7 @@ import { decode } from 'html-entities';
 
 export const getAllTimeStatisticalData = async (id: number) : Promise<any> => {
     const baseUrl = `https://waterservices.usgs.gov/nwis/stat/`;
-    const url = `${baseUrl}?format=rdb,1.0&sites=${id}&statReportType=daily&statTypeCd=median,min,max,p05,p25,p75,p95&parameterCd=00060`
+    const url = `${baseUrl}?format=rdb,1.0&sites=${id}&statReportType=daily&statTypeCd=median,min,max,p05,p25,p50,p75,p95&parameterCd=00060`
     const data = await fetch(url)
     .then( (res) => res.text())
     .then( (text) => parseStatisticalData(text));
@@ -108,6 +108,7 @@ const parseStatisticalData = (response: string) : WaterStatistic[][] => {
     const minIdx = headers.indexOf("min_va");
     const p05Idx = headers.indexOf("p05_va");
     const p25Idx = headers.indexOf("p25_va");
+    const p50Idx = headers.indexOf("p50_va");
     const p75Idx = headers.indexOf("p75_va");
     const p95Idx = headers.indexOf("p95_va");
     const dayIdx = headers.indexOf("day_nu");
@@ -125,6 +126,7 @@ const parseStatisticalData = (response: string) : WaterStatistic[][] => {
                 min : parseInt(row[minIdx]),
                 p05 : parseInt(row[p05Idx]),
                 p25 : parseInt(row[p25Idx]),
+                p50 : parseInt(row[p50Idx]),
                 p75 : parseInt(row[p75Idx]),
                 p95 : parseInt(row[p95Idx]),
             }

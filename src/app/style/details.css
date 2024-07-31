@@ -1,9 +1,13 @@
-body {
+:root {
     --color-water-max: #1c2caaaa;
     --color-water-high: #1286b0aa;
     --color-water-normal: #32da56aa;
     --color-water-low: #ebad42aa;
     --color-water-min: #e33535aa;
+}
+
+body, html {
+    width: 100vw;
 }
 
 .details-loading{
@@ -28,9 +32,10 @@ body {
     padding: 5px;
 }
 
-.details-current-data {
+.date-time-graph {
     height: 50vh;
-    width: 100vw;
+    width: 100%;
+    touch-action: none;
 }
 
 .custom-tooltip {
