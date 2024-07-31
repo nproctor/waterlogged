@@ -48,7 +48,10 @@ const Graph = ({title, data, children}: Props) => {
                                   {value:"High 75% - 95%", type:"circle", color:"var(--color-water-high)"},
                                   {value:"Normal 25% - 75%", type:"circle", color:"var(--color-water-normal)"},
                                   {value:"Low 5% - 25%", type:"circle", color:"var(--color-water-low)"},
-                                  {value:"Very Low < 5%", type:"circle", color:"var(--color-water-min)"}]} verticalAlign="top" height={50}/>
+                                  {value:"Very Low < 5%", type:"circle", color:"var(--color-water-min)"}]} 
+                                  verticalAlign="top"
+                                  wrapperStyle={{padding: 10}}
+                                  />
             </LineChart>
         </ResponsiveContainer>);
 }
