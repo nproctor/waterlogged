@@ -1,6 +1,6 @@
 import { ReferenceArea, Legend} from 'recharts';
 import { WaterData, WaterStatistic } from '@/app/types/types';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import DateTimeGraph from '@/app/components/DateTimeGraph';
 
 const MINUTES_IN_HOUR = 60;
@@ -14,6 +14,16 @@ interface Props extends PropsWithChildren{
   
 
 const DailyValueGraph = ({todaysValues, todaysStats}: Props) => {
+
+
+    const interpolate = (stats: WaterStatistic) => {
+        // Linear interpolation
+        if (!isNaN(stats.max) && !isNaN(stats.p75) && isNaN(stats.p95))
+            stats.p95 = (stats.max - stats.p75) / (25) * 20 + stats.p75;
+        if (!isNaN(stats.p25) && !isNaN(stats.min) && isNaN(stats.p05))
+            stats.p05 = (stats.p25 - stats.min) / (25) * 5 + stats.min;
+    }
+    interpolate(todaysStats);
 
 
     const timeMap = (x : Date) : number => {
@@ -43,6 +53,7 @@ const DailyValueGraph = ({todaysValues, todaysStats}: Props) => {
                                   verticalAlign="top"
                                   wrapperStyle={{padding: 10}}
                                   />
+
             <ReferenceArea y1={todaysStats.min} y2={todaysStats.p05} fill="var(--color-water-min)" ifOverflow="hidden"/>
             <ReferenceArea y1={todaysStats.p95} y2={todaysStats.max} fill="var(--color-water-max)" ifOverflow="hidden"/>
             <ReferenceArea y1={todaysStats.p05} y2={todaysStats.p25} fill="var(--color-water-low)" ifOverflow="hidden"/>

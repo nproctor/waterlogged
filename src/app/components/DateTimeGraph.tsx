@@ -25,7 +25,7 @@ const DateTimeGraph = ({title, data, xAxisFormatter, keyMap, xDomain, xLabel, xT
       setRangeScalar(rangeScalar => rangeScalar + 1);
     }
     else if (event.deltaY < 0){
-      setRangeScalar(rangeScalar => (rangeScalar > 1)? rangeScalar - 1 : rangeScalar);
+      setRangeScalar(rangeScalar => (rangeScalar > 2)? rangeScalar - 1 : rangeScalar);
     }
   }
 

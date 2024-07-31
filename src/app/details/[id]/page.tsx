@@ -13,7 +13,6 @@ interface Props {
 
 export default function Page( {params: {id}} : Props) {
   const {dailyValues, todaysValues, allTimeStats, todaysStats } = useFetchData(id);
-  const todaysDate = new Date();
 
     return (
         <div className="details">
