@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import { getAllTimeStatisticalData, getSiteDailyValues, getSiteInstantaneousValues } from '@/app/api/actions';
 import { WaterData, WaterDataVariableValue, WaterStatistic } from '@/app/types/types';
+import { interpolateValues } from '@/app/scripts/interpolate';
 
 const useFetchData = (id: number) => {
     const [dailyValues, setDailyValues] = useState<WaterData | null>(null);
@@ -29,7 +30,7 @@ const useFetchData = (id: number) => {
         getAllTimeStatisticalData(id)
         .then( (res) => {
             setAllTimeStats(res);
-            setTodaysStats(res[date.getMonth()][date.getDate()]);
+            setTodaysStats(interpolateValues(res[date.getMonth()][date.getDate()]));
         });
 
     }, []);

@@ -16,16 +16,6 @@ interface Props extends PropsWithChildren{
 const DailyValueGraph = ({todaysValues, todaysStats}: Props) => {
 
 
-    const interpolate = (stats: WaterStatistic) => {
-        // Linear interpolation
-        if (!isNaN(stats.max) && !isNaN(stats.p75) && isNaN(stats.p95))
-            stats.p95 = (stats.max - stats.p75) / (25) * 20 + stats.p75;
-        if (!isNaN(stats.p25) && !isNaN(stats.min) && isNaN(stats.p05))
-            stats.p05 = (stats.p25 - stats.min) / (25) * 5 + stats.min;
-    }
-    interpolate(todaysStats);
-
-
     const timeMap = (x : Date) : number => {
         return x.getHours() * 60 + x.getMinutes();
     }
@@ -45,20 +35,20 @@ const DailyValueGraph = ({todaysValues, todaysStats}: Props) => {
                        xDomain={[0, MINUTES_IN_DAY]}
                        xLabel={"Time"} 
                        xTicks={Array.from({length:HOURS_IN_DAY}, (_,i) => i * MINUTES_IN_HOUR)}>
-            <Legend payload={[{value: "Very High > 95%", type:"circle", color:"var(--color-water-max)"}, 
-                                  {value:"High 75% - 95%", type:"circle", color:"var(--color-water-high)"},
+            <Legend payload={[{value: "Very High > 90%", type:"circle", color:"var(--color-water-max)"}, 
+                                  {value:"High 75% - 90%", type:"circle", color:"var(--color-water-high)"},
                                   {value:"Normal 25% - 75%", type:"circle", color:"var(--color-water-normal)"},
-                                  {value:"Low 5% - 25%", type:"circle", color:"var(--color-water-low)"},
-                                  {value:"Very Low < 5%", type:"circle", color:"var(--color-water-min)"}]} 
+                                  {value:"Low 10% - 25%", type:"circle", color:"var(--color-water-low)"},
+                                  {value:"Very Low < 10%", type:"circle", color:"var(--color-water-min)"}]} 
                                   verticalAlign="top"
                                   wrapperStyle={{padding: 10}}
                                   />
 
-            <ReferenceArea y1={todaysStats.min} y2={todaysStats.p05} fill="var(--color-water-min)" ifOverflow="hidden"/>
-            <ReferenceArea y1={todaysStats.p95} y2={todaysStats.max} fill="var(--color-water-max)" ifOverflow="hidden"/>
-            <ReferenceArea y1={todaysStats.p05} y2={todaysStats.p25} fill="var(--color-water-low)" ifOverflow="hidden"/>
-            <ReferenceArea y1={todaysStats.p75} y2={todaysStats.p95} fill="var(--color-water-high)" ifOverflow="hidden"/>
-            <ReferenceArea y1={todaysStats.p25} y2={todaysStats.p75} fill="var(--color-water-normal)" ifOverflow="hidden"/>  
+            <ReferenceArea y1={todaysStats[0].value} y2={todaysStats[10].value} fill="var(--color-water-min)" ifOverflow="hidden"/>
+            <ReferenceArea y1={todaysStats[10].value} y2={todaysStats[25].value} fill="var(--color-water-low)" ifOverflow="hidden"/>
+            <ReferenceArea y1={todaysStats[25].value} y2={todaysStats[75].value} fill="var(--color-water-normal)" ifOverflow="hidden"/>
+            <ReferenceArea y1={todaysStats[75].value} y2={todaysStats[90].value} fill="var(--color-water-high)" ifOverflow="hidden"/>  
+            <ReferenceArea y1={todaysStats[90].value} y2={todaysStats[100].value} fill="var(--color-water-max)" ifOverflow="hidden"/>
 
         </DateTimeGraph>)
 }

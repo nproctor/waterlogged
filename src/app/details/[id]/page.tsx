@@ -2,7 +2,7 @@
 import { ClipLoader } from 'react-spinners';
 import useFetchData from '@/app/hooks/useFetchData';
 import DailyValueGraph from '@/app/components/DailyValueGraph';
-import SiteDetailHeader from '@/app/components/SiteDetailHeader';
+import SiteOverview from '@/app/components/SiteOverview';
 import '@/app/style/details.css'
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function Page( {params: {id}} : Props) {
-  const {dailyValues, todaysValues, allTimeStats, todaysStats } = useFetchData(id);
+    const {dailyValues, todaysValues, allTimeStats, todaysStats } = useFetchData(id);
 
     return (
         <div className="details">
@@ -23,10 +23,14 @@ export default function Page( {params: {id}} : Props) {
            todaysStats ? 
                   <div className="details-content"> 
                     {/* Site Information */}
-                    <SiteDetailHeader data={todaysValues}/>
+                    <SiteOverview todaysValues={todaysValues} todaysStats={todaysStats}/>
 
-                    {/* Todays values */}
+                    {/* Todays Graph */}
                     <DailyValueGraph todaysValues={todaysValues} todaysStats={todaysStats}/>
+
+                    {/* Weekly Trend */}
+
+                    {/* Yearly Trend */}
                     
                   </div> : 
                   <div className="details-loading">

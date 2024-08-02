@@ -7,7 +7,7 @@ import { decode } from 'html-entities';
 
 export const getAllTimeStatisticalData = async (id: number) : Promise<any> => {
     const baseUrl = `https://waterservices.usgs.gov/nwis/stat/`;
-    const url = `${baseUrl}?format=rdb,1.0&sites=${id}&statReportType=daily&statTypeCd=median,min,max,p05,p25,p50,p75,p95&parameterCd=00060`
+    const url = `${baseUrl}?format=rdb,1.0&sites=${id}&statReportType=daily&statTypeCd=median,min,max,p05,p10,p20,p25,p50,p75,p80,p90,p95&parameterCd=00060`
     const data = await fetch(url)
     .then( (res) => res.text())
     .then( (text) => parseStatisticalData(text));
@@ -107,9 +107,13 @@ const parseStatisticalData = (response: string) : WaterStatistic[][] => {
     const maxIdx = headers.indexOf("max_va");
     const minIdx = headers.indexOf("min_va");
     const p05Idx = headers.indexOf("p05_va");
+    const p10Idx = headers.indexOf("p10_va");
+    const p20Idx = headers.indexOf("p20_va");
     const p25Idx = headers.indexOf("p25_va");
     const p50Idx = headers.indexOf("p50_va");
     const p75Idx = headers.indexOf("p75_va");
+    const p80Idx = headers.indexOf("p80_va");
+    const p90Idx = headers.indexOf("p90_va");
     const p95Idx = headers.indexOf("p95_va");
     const dayIdx = headers.indexOf("day_nu");
     const monthIdx = headers.indexOf("month_nu");
@@ -121,15 +125,19 @@ const parseStatisticalData = (response: string) : WaterStatistic[][] => {
     lines.forEach( (line) => {
         const row = line.split("\t");
         if (row.length > 1){
-            const waterStat : WaterStatistic = {
-                max : parseInt(row[maxIdx]),
-                min : parseInt(row[minIdx]),
-                p05 : parseInt(row[p05Idx]),
-                p25 : parseInt(row[p25Idx]),
-                p50 : parseInt(row[p50Idx]),
-                p75 : parseInt(row[p75Idx]),
-                p95 : parseInt(row[p95Idx]),
-            }
+            const waterStat : WaterStatistic = [];
+            waterStat[100] = {label: "max", value: parseInt(row[maxIdx]), estimated: false},
+            waterStat[0] = {label: "min", value: parseInt(row[minIdx]), estimated: false},
+            waterStat[5] = {label: "p05", value: parseInt(row[p05Idx]), estimated: false},
+            waterStat[10] = {label: "p10", value: parseInt(row[p10Idx]), estimated: false},
+            waterStat[20] = {label: "p20", value: parseInt(row[p20Idx]), estimated: false},
+            waterStat[25] = {label: "p25", value: parseInt(row[p25Idx]), estimated: false},
+            waterStat[50] = {label: "p50", value: parseInt(row[p50Idx]), estimated: false},
+            waterStat[75] = {label: "p75", value: parseInt(row[p75Idx]), estimated: false},
+            waterStat[80] = {label: "p80", value: parseInt(row[p80Idx]), estimated: false},
+            waterStat[90] = {label: "p90", value: parseInt(row[p90Idx]), estimated: false},
+            waterStat[95] =  {label: "p95", value: parseInt(row[p95Idx]), estimated: false},
+            
             waterStatisticData[parseInt(row[monthIdx])-1][parseInt(row[dayIdx])] = waterStat;
         }
     });
