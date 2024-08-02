@@ -1,20 +1,22 @@
 :root {
     --color-water-undefined: #333333;
-    --color-water-max: #1c2caaaa;
-    --color-water-high: #1286b0aa;
-    --color-water-normal: #32da56aa;
-    --color-water-low: #ebad42aa;
-    --color-water-min: #e33535aa;
+    --color-water-max: #1c2caa;
+    --color-water-high: #1286b0;
+    --color-water-normal: #32da56;
+    --color-water-low: #ebad42;
+    --color-water-min: #e33535;
 }
 
-body, html {
+.details{
     width: 100vw;
+    margin: 0px;
+    padding: 10px;
 }
 
 .details-loading{
     align-content: center;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     display: flex;
 }
 
@@ -22,15 +24,18 @@ body, html {
     margin: auto;
 }
 
-.details-site-overview {
-    margin: 10px;
+.details-site-overview-table {
+    border: #bbbbbb 1px solid
 }
 
-
-
-.details-table td {
-    background-color: #EEEEEE;
+.details-site-overview-table td, 
+.details-site-overview-table th{
     padding: 5px;
+    border: #bbbbbb 1px solid;
+}
+
+.details-site-overview-table th{
+    background-color: #EEEEEE;
 }
 
 .date-time-graph {

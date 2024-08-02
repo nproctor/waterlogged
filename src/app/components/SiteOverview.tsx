@@ -16,16 +16,17 @@ const SiteOverview = ({todaysValues, todaysStats} : Props) => {
                 <p>Latitude: {todaysValues.geoLocation.latitude}</p>
                 <p>Longitude: {todaysValues.geoLocation.longitude}</p>
             </div>
-            <table>
+            <br></br>
+            <table className="details-site-overview details-site-overview-table">
                 <tr>
                     <th>Last Updated</th>
                     <th>{todaysValues.variable.variableName}</th>
-                    <th>Approximated Percentile</th>
+                    <th>Percentile</th>
                 </tr>
                 <tr>
                     <td>{todaysValues.variable.values.at(-1)?.dateTime.toLocaleString()}</td>
                     <td>{todaysValues.variable.values.at(-1)?.value}</td>
-                    <td style={{color: getColorFromPercentile(percentile)}}>{percentile?.toFixed(1)}</td>
+                    <td style={{background: getColorFromPercentile(percentile)}}>{percentile?.toFixed(1)}</td>
                 </tr>
             </table>
         </div>

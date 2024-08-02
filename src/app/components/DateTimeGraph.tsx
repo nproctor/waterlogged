@@ -15,28 +15,11 @@ interface Props extends PropsWithChildren{
 
 const DateTimeGraph = ({title, data, xAxisFormatter, keyMap, xDomain, xLabel, xTicks, children}: Props) => {
 
-  const ref = useRef<HTMLDivElement>(null);
   const [rangeScalar, setRangeScalar] = useState<number>(2);
 
-  const scrollHandler = (event: WheelEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    if (event.deltaY > 0 ){
-      setRangeScalar(rangeScalar => rangeScalar + 1);
-    }
-    else if (event.deltaY < 0){
-      setRangeScalar(rangeScalar => (rangeScalar > 2)? rangeScalar - 1 : rangeScalar);
-    }
-  }
-
-  useEffect( () => {
-      ref.current?.addEventListener('wheel', scrollHandler, {passive:false});
-      return () => ref.current?.removeEventListener('wheel', scrollHandler);
-  }, [])
-
     return (
-      <div ref={ref} className="date-time-graph">
-        <ResponsiveContainer width="95%" height="95%">
+      <div className="date-time-graph">
+        <ResponsiveContainer width="100%" height="100%">
             <LineChart title={title} data={data.variable.values} margin={{top: 20, bottom: 20, left: 20, right: 20}}>
                 <Line type="monotone" dataKey="value" stroke="black" />
                 <CartesianGrid stroke="#ccc" />
