@@ -1,6 +1,6 @@
-import { WaterStatistic } from "@/app/types/types";
+import { WaterStatisticValue } from "@/app/types/types";
 
-export const interpolateValues = (stats: WaterStatistic) : WaterStatistic => {
+export const interpolateValues = (stats: WaterStatisticValue[]) : WaterStatisticValue[] => {
     // If min, max or median are NaN, not enough data for any reasonable interpolation
     if (isNaN(stats[0].value) || isNaN(stats[100].value) || isNaN(stats[50].value))
         return [];
@@ -34,7 +34,7 @@ const linearInterpolation = (x1 : number, x2: number, x: number, y1: number, y2:
     return (y2 - y1) / (x2 - x1) * (x - x1) + y1;
 }
 
-export const getPercentile = (value: number | undefined, stats: WaterStatistic) => {
+export const getPercentile = (value: number | undefined, stats: WaterStatisticValue[]) => {
     if (!value)
         return undefined;
     let p1 = 0, p2 = 0, v1 = 0, v2 = 0;

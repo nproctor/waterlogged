@@ -57,10 +57,13 @@ export interface WaterDataVariableValue {
     dateTime : Date,
 }
 
-export type WaterStatistic = ApproxValue[];
+export interface WaterStatistic {
+    day: number,
+    month: number,
+    values: WaterStatisticValue[];
+}
 
-
-interface ApproxValue {
+export interface WaterStatisticValue {
     label : string,
     value : number,
     estimated : boolean,

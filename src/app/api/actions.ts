@@ -1,7 +1,7 @@
 
 "use server";
 
-import { WaterServicesResponse, WaterServicesResponseData, WaterData, WaterDataVariable, WaterStatistic } from "@/app/types/types"
+import { WaterServicesResponse, WaterServicesResponseData, WaterData, WaterDataVariable, WaterStatistic, WaterStatisticValue } from "@/app/types/types"
 import { parse } from "path";
 import { decode } from 'html-entities';
 
@@ -92,8 +92,8 @@ const mapVariableSchema = (point : WaterServicesResponseData) : WaterDataVariabl
 }
 
 // Sparse Array of Statistic Data for the year
-const parseStatisticalData = (response: string) : WaterStatistic[][] => {
-    const waterStatisticData : WaterStatistic[][] = Array.from(Array(12), () :  WaterStatistic[] => [])
+const parseStatisticalData = (response: string) : WaterStatistic[] => {
+    const waterStatisticData : WaterStatistic[] = [];
     let lines : string[] = response.split("\n");
 
     // Skip comments
@@ -125,7 +125,7 @@ const parseStatisticalData = (response: string) : WaterStatistic[][] => {
     lines.forEach( (line) => {
         const row = line.split("\t");
         if (row.length > 1){
-            const waterStat : WaterStatistic = [];
+            const waterStat : WaterStatisticValue[] = [];
             waterStat[100] = {label: "max", value: parseInt(row[maxIdx]), estimated: false},
             waterStat[0] = {label: "min", value: parseInt(row[minIdx]), estimated: false},
             waterStat[5] = {label: "p05", value: parseInt(row[p05Idx]), estimated: false},
@@ -136,9 +136,10 @@ const parseStatisticalData = (response: string) : WaterStatistic[][] => {
             waterStat[75] = {label: "p75", value: parseInt(row[p75Idx]), estimated: false},
             waterStat[80] = {label: "p80", value: parseInt(row[p80Idx]), estimated: false},
             waterStat[90] = {label: "p90", value: parseInt(row[p90Idx]), estimated: false},
-            waterStat[95] =  {label: "p95", value: parseInt(row[p95Idx]), estimated: false},
-            
-            waterStatisticData[parseInt(row[monthIdx])-1][parseInt(row[dayIdx])] = waterStat;
+            waterStat[95] = {label: "p95", value: parseInt(row[p95Idx]), estimated: false}
+            const month = parseInt(row[monthIdx]);
+            const day = parseInt(row[dayIdx])
+            waterStatisticData.push({month: month, day: day, values: waterStat});
         }
     });
 

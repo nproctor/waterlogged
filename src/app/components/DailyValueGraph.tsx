@@ -1,5 +1,5 @@
-import { ReferenceArea, Legend} from 'recharts';
-import { WaterData, WaterStatistic } from '@/app/types/types';
+import { ReferenceArea, Legend, Line} from 'recharts';
+import { WaterData, WaterDataVariableValue, WaterStatisticValue } from '@/app/types/types';
 import { PropsWithChildren, useEffect } from 'react';
 import DateTimeGraph from '@/app/components/DateTimeGraph';
 
@@ -9,31 +9,32 @@ const MINUTES_IN_DAY = 60 * 24;
 
 interface Props extends PropsWithChildren{
     todaysValues : WaterData,
-    todaysStats : WaterStatistic
+    todaysStats : WaterStatisticValue[]
 }
   
 
 const DailyValueGraph = ({todaysValues, todaysStats}: Props) => {
 
 
-    const timeMap = (x : Date) : number => {
-        return x.getHours() * 60 + x.getMinutes();
+    const timeMap = (v : WaterDataVariableValue) : number => {
+        return v.dateTime.getHours() * 60 + v.dateTime.getMinutes();
     }
 
     const xAxisFormatter = (timeInMinutes : number, index: number) => {
         const hours = (timeInMinutes / 60).toFixed(0).padStart(2, '0');
         const minutes = (timeInMinutes % 60).toFixed(0).padStart(2, '0');
         return `${hours}:${minutes}`;
-      }
+    }
 
 
     return (
         <DateTimeGraph title={"Todays Values"}
-                       data={todaysValues} 
+                       data={todaysValues.variable.values} 
                        xAxisFormatter={xAxisFormatter}
-                       keyMap={timeMap} 
+                       xKeyMap={timeMap}
                        xDomain={[0, MINUTES_IN_DAY]}
-                       xLabel={"Time"} 
+                       xLabel={"Time"}
+                       yLabel={todaysValues.variable.variableName} 
                        xTicks={Array.from({length:HOURS_IN_DAY}, (_,i) => i * MINUTES_IN_HOUR)}>
             <Legend payload={[{value: "Very High > 90%", type:"circle", color:"var(--color-water-max)"}, 
                                   {value:"High 75% - 90%", type:"circle", color:"var(--color-water-high)"},
@@ -43,6 +44,7 @@ const DailyValueGraph = ({todaysValues, todaysStats}: Props) => {
                                   verticalAlign="top"
                                   wrapperStyle={{padding: 10}}
                                   />
+            <Line type="monotone" dataKey={(v: WaterDataVariableValue) => v.value} stroke="black" />
 
             <ReferenceArea y1={todaysStats[0].value} y2={todaysStats[10].value} fill="var(--color-water-min)" ifOverflow="hidden"/>
             <ReferenceArea y1={todaysStats[10].value} y2={todaysStats[25].value} fill="var(--color-water-low)" ifOverflow="hidden"/>

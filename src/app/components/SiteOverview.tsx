@@ -1,10 +1,10 @@
-import {WaterData, WaterStatistic} from '@/app/types/types'
+import {WaterData, WaterStatisticValue} from '@/app/types/types'
 import { getColorFromPercentile, getPercentile } from '@/app/scripts/interpolate'
 
 
 interface Props {
     todaysValues: WaterData,
-    todaysStats: WaterStatistic
+    todaysStats: WaterStatisticValue[]
 }
 
 const SiteOverview = ({todaysValues, todaysStats} : Props) => {
@@ -17,6 +17,7 @@ const SiteOverview = ({todaysValues, todaysStats} : Props) => {
                 <p>Longitude: {todaysValues.geoLocation.longitude}</p>
             </div>
             <br></br>
+            <span className="section-title">Current Value:</span>
             <table className="details-site-overview details-site-overview-table">
                 <tr>
                     <th>Last Updated</th>

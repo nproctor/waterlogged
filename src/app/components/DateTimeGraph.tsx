@@ -1,29 +1,30 @@
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Label, TooltipProps} from 'recharts';
-import { WaterData } from '@/app/types/types';
+import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Label, TooltipProps, ComposedChart} from 'recharts';
+import { WaterData, WaterDataVariable, WaterDataVariableValue, WaterStatistic} from '@/app/types/types';
 import { PropsWithChildren, useRef, useEffect, useState } from 'react';
 
 interface Props extends PropsWithChildren{
     title: string,
-    data: WaterData,
+    data: WaterStatistic[] | WaterDataVariableValue[],
     xAxisFormatter: (value: number, index: number) => string,
-    keyMap: (date: Date) => number,
-    xDomain: [number, number],
+    xKeyMap: ((v : WaterDataVariableValue) => number) | ((v : WaterStatistic) => number),
+    xDomain?: [number, number],
     xLabel: string,
+    yLabel : string,
     xTicks? : number[],
 }
   
 
-const DateTimeGraph = ({title, data, xAxisFormatter, keyMap, xDomain, xLabel, xTicks, children}: Props) => {
+const DateTimeGraph = ({title, data, xAxisFormatter, xKeyMap, xDomain, xLabel, yLabel, xTicks, children}: Props) => {
 
   const [rangeScalar, setRangeScalar] = useState<number>(2);
 
     return (
       <div className="date-time-graph">
+        <span className="section-title">{title}</span>
         <ResponsiveContainer width="100%" height="100%">
-            <LineChart title={title} data={data.variable.values} margin={{top: 20, bottom: 20, left: 20, right: 20}}>
-                <Line type="monotone" dataKey="value" stroke="black" />
+            <ComposedChart data={data} margin={{top: 20, bottom: 20, left: 20, right: 20}}>
                 <CartesianGrid stroke="#ccc" />
-                <XAxis dataKey={(v) => keyMap(v.dateTime)} 
+                <XAxis dataKey={(v) => xKeyMap(v)} 
                         tickFormatter={xAxisFormatter} 
                         height={30} 
                         type='number' 
@@ -32,11 +33,11 @@ const DateTimeGraph = ({title, data, xAxisFormatter, keyMap, xDomain, xLabel, xT
                     <Label value={xLabel} position='bottom' color="black"/>
                 </XAxis>
                 <YAxis domain={[(dataMin : number) => (dataMin / rangeScalar), (dataMax : number) => (dataMax * rangeScalar)]} tickFormatter={(v) => v.toFixed(1)}>
-                    <Label value={data.variable.variableName} angle={-90} position='left' color="black"/>
+                    <Label value={yLabel} angle={-90} position='left' color="black"/>
                 </YAxis>
                 {children}
-                <Tooltip content={<CustomTooltip yLabel={data.variable.variableName} xLabel={xLabel} xAxisFormatter={xAxisFormatter}/>} />
-            </LineChart>
+                <Tooltip content={<CustomTooltip yLabel={yLabel} xLabel={xLabel} xAxisFormatter={xAxisFormatter}/>} />
+            </ComposedChart>
         </ResponsiveContainer>
       </div>);
 }
