@@ -1,10 +1,8 @@
 "use client";
 
-import L from "leaflet";
-import {useRef, PropsWithChildren } from "react";
-import { ControlPosition } from 'leaflet';
-import { createControlComponent } from '@react-leaflet/core'
-import { renderToStaticMarkup } from "react-dom/server";
+import {useEffect, PropsWithChildren, useRef, MouseEvent } from "react";
+import { Control, DomUtil, ControlPosition, DomEvent} from 'leaflet';
+import { useMap } from "react-leaflet";
 
 
 
@@ -14,21 +12,37 @@ interface Props {
     onClick: () => void,
 }
 
-const createControlLayer = (props : PropsWithChildren<Props>) => {
-    const controlInstance = new L.Control({position: props.position});
-    controlInstance.onAdd = () => {
-        const button = L.DomUtil.create("div", `leaflet-control leaflet-bar ${props.className}`);
-        L.DomEvent.disableClickPropagation(button);
-        L.DomEvent.disableScrollPropagation(button);
-        button.innerHTML = renderToStaticMarkup(
-            <a>{props.children}</a>
-        );
-        button.onclick = props.onClick;
-        return button;
-    }  
-    return controlInstance;
-};
+const CustomControl = (props : PropsWithChildren<Props>) => {
+    const map = useMap();
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
-const CustomControl = createControlComponent(createControlLayer);
+    useEffect( () => {
+        const controlInstance = new Control({position: props.position});
+        if (buttonRef.current){
+            const button = buttonRef.current;
+            controlInstance.onAdd = () => {
+                DomEvent.disableClickPropagation(button);
+                DomEvent.disableScrollPropagation(button);
+                return button;
+            }
+        }
+        controlInstance.addTo(map);
+        return () => {controlInstance.remove()}; 
+    }, [map])
+
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        event.preventDefault();
+        props.onClick();
+    }
+
+    return (
+        <button className={`leaflet-control leaflet-bar ${props.className}`} onClick={handleClick} ref={buttonRef}>
+            <a>
+               {props.children} 
+            </a>
+        </button>
+    )
+}
 
 export default CustomControl;

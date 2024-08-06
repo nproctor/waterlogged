@@ -10,7 +10,7 @@ import "leaflet-defaulticon-compatibility";
 import CurrentLocationButton from "@/app/components/CurrentLocationButton";
 import SearchAreaButton from "@/app/components/SearchAreaButton";
 import MapStat from '@/app/components/MapStat';
-import useSearchArea from "@/app/hooks/useSearchArea"
+import useSearchArea from "@/app/hooks/useSearchArea";
 
 
 const Map = () => { 

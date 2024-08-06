@@ -1,14 +1,13 @@
-
+'use client'
 import {useState, useEffect} from 'react';
 import { WaterData } from '@/app/types/types';
 import { LatLngBounds } from 'leaflet';
-import {useMap} from 'react-leaflet';
 import { getEnvelopeInstantaneousValues } from '@/app/api/actions';
 import toast from 'react-hot-toast';
 
 const useSearchArea = () => {
     const [gaugeData, setGaugeData] = useState<WaterData[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const getArea = (bounds: LatLngBounds) => {
       const height = bounds.getNorth() - bounds.getSouth();
@@ -17,13 +16,13 @@ const useSearchArea = () => {
     }
   
     const getGaugeData = (bounds: LatLngBounds) => {
-      // Check if already searching
-      if (isLoading)
+      if (isLoading){
         return;
+      }
 
       // Check if bounds are within query limits
       if (getArea(bounds) > 25){
-        toast.error("Zoom in to search this area!");
+        toast.error("Zoom in to search this area!");  
         return;
       }
 
@@ -41,14 +40,16 @@ const useSearchArea = () => {
           resolve();
         })
         .catch(() => reject())
-        .finally(() => setIsLoading(false))
       });
   
       toast.promise(promise, {
         loading: "Loading...",
         success: "Done!",
         error: "Error: Unable to load data",
-      });
+      })
+      .then( () => {
+        setIsLoading(false)
+      })
     }
 
     return {gaugeData, getGaugeData};
