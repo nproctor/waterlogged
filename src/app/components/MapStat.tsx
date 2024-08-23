@@ -12,10 +12,12 @@ const MapStat = ({data}: Props) => {
                 <b>{data.name}</b>
             </Link>
             <table className="leaflet-popup-table-stats">
+                <tbody>
                 <tr key={data.variable.oid}>
                     <td><b>{data.variable.variableName}</b></td>
                     <td>{data.variable.values[0].value}</td>
                 </tr>
+                </tbody>
             </table>
         </div>
     )
