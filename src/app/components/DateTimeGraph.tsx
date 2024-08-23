@@ -23,7 +23,7 @@ const DateTimeGraph = ({title, data, xAxisFormatter, xKeyMap, yKeyMap, xDomain, 
       <div className="date-time-graph">
         <span className="section-title">{title}</span>
         <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={data} margin={{top: 20, bottom: 20, left: 20, right: 20}}>
+            <ComposedChart data={data} margin={{top: 10, bottom: 80, left: 30, right: 30}}>
                 <CartesianGrid stroke="#ccc" />
                 <XAxis dataKey={(v) => xKeyMap(v)} 
                         tickFormatter={xAxisFormatter} 

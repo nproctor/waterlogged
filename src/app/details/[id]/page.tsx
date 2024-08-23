@@ -23,7 +23,7 @@ export default function Page( {params: {id}} : Props) {
            todaysValues &&
            allTimeStats &&
            todaysStats ? 
-                  <div className="details-content"> 
+                  <div> 
                     {/* Site Information */}
                     <SiteOverview todaysValues={todaysValues} todaysStats={todaysStats}/>
                     <br></br>
