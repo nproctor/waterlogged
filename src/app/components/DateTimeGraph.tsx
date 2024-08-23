@@ -1,20 +1,21 @@
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Label, TooltipProps, ComposedChart} from 'recharts';
-import { WaterData, WaterDataVariable, WaterDataVariableValue, WaterStatistic} from '@/app/types/types';
-import { PropsWithChildren, useRef, useEffect, useState } from 'react';
+import { XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Label, TooltipProps, ComposedChart} from 'recharts';
+import { WaterDataVariableValue, WaterStatistic, WaterStatisticValue} from '@/app/types/types';
+import { PropsWithChildren, useState } from 'react';
 
 interface Props extends PropsWithChildren{
     title: string,
-    data: WaterStatistic[] | WaterDataVariableValue[],
+    data: WaterStatistic[] | WaterDataVariableValue[] | WaterStatisticValue[],
     xAxisFormatter: (value: number, index: number) => string,
-    xKeyMap: ((v : WaterDataVariableValue) => number) | ((v : WaterStatistic) => number),
-    xDomain?: [number, number],
+    xKeyMap: ((v : WaterDataVariableValue) => number) | ((v : WaterStatistic) => number) | ((v : WaterStatisticValue) => number),
+    yKeyMap?: ((v : WaterDataVariableValue) => number) | ((v : WaterStatistic) => number) | ((v : WaterStatisticValue) => number),
+    xDomain: [number, number],
     xLabel: string,
     yLabel : string,
     xTicks? : number[],
 }
   
 
-const DateTimeGraph = ({title, data, xAxisFormatter, xKeyMap, xDomain, xLabel, yLabel, xTicks, children}: Props) => {
+const DateTimeGraph = ({title, data, xAxisFormatter, xKeyMap, yKeyMap, xDomain, xLabel, yLabel, xTicks, children}: Props) => {
 
   const [rangeScalar, setRangeScalar] = useState<number>(2);
 
@@ -32,7 +33,10 @@ const DateTimeGraph = ({title, data, xAxisFormatter, xKeyMap, xDomain, xLabel, y
                         ticks={xTicks}>
                     <Label value={xLabel} position='bottom' color="black"/>
                 </XAxis>
-                <YAxis domain={[(dataMin : number) => (dataMin / rangeScalar), (dataMax : number) => (dataMax * rangeScalar)]} tickFormatter={(v) => v.toFixed(1)}>
+                <YAxis domain={[(dataMin : number) => (dataMin / rangeScalar), (dataMax : number) => (dataMax * rangeScalar)]} 
+                       tickFormatter={(v) => v.toFixed(1)}
+                       dataKey={yKeyMap}
+                       type='number'>
                     <Label value={yLabel} angle={-90} position='left' color="black"/>
                 </YAxis>
                 {children}

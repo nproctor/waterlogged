@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import { getAllTimeStatisticalData, getSiteDailyValues, getSiteInstantaneousValues } from '@/app/api/actions';
 import { WaterData, WaterDataVariableValue, WaterStatistic, WaterStatisticValue } from '@/app/types/types';
-import { interpolateValues } from '@/app/scripts/interpolate';
+import { interpolateWaterStatisticValues } from '@/app/scripts/interpolate';
 
 const useFetchData = (id: number) => {
     const [dailyValues, setDailyValues] = useState<WaterData | null>(null);
@@ -15,12 +15,13 @@ const useFetchData = (id: number) => {
         getSiteDailyValues(id, 7)
         .then((res) => {
             setDailyValues(res)
-            
         })
 
         // Values since midnight
         const date = new Date(Date.now());
         date.setHours(0,0,0,0);
+
+        // Returns true if the day is today and false otherwise
         const isToday = (data: WaterStatistic) => {
             if (data.day === date.getDate() && data.month === (date.getMonth() + 1))
                 return true;
@@ -36,7 +37,10 @@ const useFetchData = (id: number) => {
         getAllTimeStatisticalData(id)
         .then( (res) => {
             setAllTimeStats(res);
-            setTodaysStats(interpolateValues(res.find(isToday).values));
+            const todaysData = res.find(isToday);
+            if (todaysData){
+                setTodaysStats(interpolateWaterStatisticValues(todaysData.values));
+            }
         });
 
     }, []);

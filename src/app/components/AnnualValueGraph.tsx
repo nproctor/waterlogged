@@ -38,7 +38,7 @@ const AnnualValueGraph = ({allTimeStats}: Props) => {
                        xDomain={[1,366]}
                        xTicks={Array.from(Object.keys(daysElapsedByMonth), (v) => daysElapsedByMonth[parseInt(v)] + 1)}
                        yLabel={"Streamflow, ft^3/s"}>
-            <Area type="monotone" dataKey={(v : WaterStatistic) => {return v.values[50].value}} fillOpacity={1} fill="#8884d8" stroke="#8884d8" />
+            <Area type="monotone" dataKey={(v : WaterStatistic) => {return v.values[5].value}} fillOpacity={1} fill="#8884d8" stroke="#8884d8" />
     </DateTimeGraph>)
 }
 

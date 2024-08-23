@@ -64,7 +64,7 @@ export interface WaterStatistic {
 }
 
 export interface WaterStatisticValue {
-    label : string,
+    percentile : number,
     value : number,
     estimated : boolean,
 }

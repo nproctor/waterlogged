@@ -5,6 +5,7 @@ import DailyValueGraph from '@/app/components/DailyValueGraph';
 import SiteOverview from '@/app/components/SiteOverview';
 import '@/app/style/details.css'
 import AnnualValueGraph from '@/app/components/AnnualValueGraph';
+import PercentileGraph from '@/app/components/PercentileGraph';
 
 interface Props {
   params : {
@@ -29,6 +30,8 @@ export default function Page( {params: {id}} : Props) {
                     {/* Todays Graph */}
                     <DailyValueGraph todaysValues={todaysValues} todaysStats={todaysStats}/>
 
+                    {/* Percentile Graph */}
+                    <PercentileGraph todaysStats={todaysStats} />
                     {/* Weekly Trend */}
 
                     {/* Yearly Trend */}

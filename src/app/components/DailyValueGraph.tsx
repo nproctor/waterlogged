@@ -46,11 +46,11 @@ const DailyValueGraph = ({todaysValues, todaysStats}: Props) => {
                                   />
             <Line type="monotone" dataKey={(v: WaterDataVariableValue) => v.value} stroke="black" />
 
-            <ReferenceArea y1={todaysStats[0].value} y2={todaysStats[10].value} fill="var(--color-water-min)" ifOverflow="hidden"/>
-            <ReferenceArea y1={todaysStats[10].value} y2={todaysStats[25].value} fill="var(--color-water-low)" ifOverflow="hidden"/>
-            <ReferenceArea y1={todaysStats[25].value} y2={todaysStats[75].value} fill="var(--color-water-normal)" ifOverflow="hidden"/>
-            <ReferenceArea y1={todaysStats[75].value} y2={todaysStats[90].value} fill="var(--color-water-high)" ifOverflow="hidden"/>  
-            <ReferenceArea y1={todaysStats[90].value} y2={todaysStats[100].value} fill="var(--color-water-max)" ifOverflow="hidden"/>
+            <ReferenceArea y1={todaysStats[0].value} y2={todaysStats[2].value} fill="var(--color-water-min)" ifOverflow="hidden"/>
+            <ReferenceArea y1={todaysStats[2].value} y2={todaysStats[4].value} fill="var(--color-water-low)" ifOverflow="hidden"/>
+            <ReferenceArea y1={todaysStats[4].value} y2={todaysStats[6].value} fill="var(--color-water-normal)" ifOverflow="hidden"/>
+            <ReferenceArea y1={todaysStats[6].value} y2={todaysStats[8].value} fill="var(--color-water-high)" ifOverflow="hidden"/>  
+            <ReferenceArea y1={todaysStats[8].value} y2={todaysStats[10].value} fill="var(--color-water-max)" ifOverflow="hidden"/>
 
         </DateTimeGraph>)
 }
