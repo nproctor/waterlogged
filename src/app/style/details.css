@@ -42,7 +42,6 @@
 .date-time-graph {
     height: 50vh;
     width: 100%;
-    touch-action: none;
 }
 
 .custom-tooltip {
