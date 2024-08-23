@@ -109,8 +109,8 @@ export const getPercentile = (value: number, stats: WaterStatisticValue[]) => {
    *
    * @param percentile number representing the percentile
    */
-export const getColorFromPercentile = (percentile: number) => {
-    if (percentile === Infinity || percentile === -Infinity)
+export const getColorFromPercentile = (percentile: number | undefined) => {
+    if (percentile === Infinity || percentile === -Infinity || percentile === undefined)
         return "var(--color-water-undefined)";
     if (percentile < 10)
         return "var(--color-water-min)";

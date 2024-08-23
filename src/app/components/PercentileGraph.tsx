@@ -1,11 +1,8 @@
-import { ReferenceArea, Legend, Line, Scatter, Cell} from 'recharts';
-import { WaterData, WaterDataVariableValue, WaterStatisticValue } from '@/app/types/types';
+import { Scatter, Cell} from 'recharts';
+import { WaterStatisticValue } from '@/app/types/types';
 import { PropsWithChildren, useEffect } from 'react';
 import DateTimeGraph from '@/app/components/DateTimeGraph';
 
-const MINUTES_IN_HOUR = 60;
-const HOURS_IN_DAY = 24;
-const MINUTES_IN_DAY = 60 * 24;
 
 interface Props extends PropsWithChildren{
     todaysStats : WaterStatisticValue[]

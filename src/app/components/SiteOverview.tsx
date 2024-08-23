@@ -8,7 +8,8 @@ interface Props {
 }
 
 const SiteOverview = ({todaysValues, todaysStats} : Props) => {
-    const percentile = getPercentile(todaysValues.variable.values.at(-1)?.value, todaysStats);
+    const recentValue = todaysValues.variable.values.at(-1)?.value;
+    const percentile = recentValue ? getPercentile(recentValue, todaysStats) : undefined;
     return (
         <div className="details-site-overview">
             <h1 className="name">{todaysValues.name}</h1>
@@ -27,7 +28,7 @@ const SiteOverview = ({todaysValues, todaysStats} : Props) => {
                 <tr>
                     <td>{todaysValues.variable.values.at(-1)?.dateTime.toLocaleString()}</td>
                     <td>{todaysValues.variable.values.at(-1)?.value}</td>
-                    <td style={{background: getColorFromPercentile(percentile)}}>{percentile?.toFixed(1)}</td>
+                    <td style={{background: getColorFromPercentile(percentile) }}>{percentile?.toFixed(1)}</td>
                 </tr>
             </table>
         </div>
