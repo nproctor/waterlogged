@@ -1,4 +1,4 @@
-import { Scatter, Cell} from 'recharts';
+import { Scatter, Cell, Legend, Tooltip} from 'recharts';
 import { WaterStatisticValue } from '@/app/types/types';
 import { PropsWithChildren, useEffect } from 'react';
 import DateTimeGraph from '@/app/components/DateTimeGraph';
@@ -24,9 +24,13 @@ const PercentileGraph = ({todaysStats}: Props) => {
                        xLabel={"Percentile"}
                        xDomain={[0,100]}
                        yLabel={"Streamflow, ft^3/s"}>
-            <Scatter data={todaysStats}>
+            <Legend payload={[{value: "Actual", type: "circle", color: "var(--color-water-max)"}, 
+                                  {value: "Estimated", type: "circle", color: "var(--color-water-min)"}]} 
+                                  verticalAlign="top"
+                                  wrapperStyle={{padding: 10}} />
+            <Scatter line fill="gray" >
                 {todaysStats.map((v, i) => {
-                    return <Cell key={i} fill={v.estimated? "red" : "green"}></Cell>
+                    return <Cell key={`cell-${i}`} fill={v.estimated? "var(--color-water-min)" : "var(--color-water-max)"}></Cell>
                 })}
             </Scatter>
     </DateTimeGraph>)  

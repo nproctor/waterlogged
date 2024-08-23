@@ -40,7 +40,7 @@ const DateTimeGraph = ({title, data, xAxisFormatter, xKeyMap, yKeyMap, xDomain, 
                     <Label value={yLabel} angle={-90} position='left' color="black"/>
                 </YAxis>
                 {children}
-                <Tooltip content={<CustomTooltip yLabel={yLabel} xLabel={xLabel} xAxisFormatter={xAxisFormatter}/>} />
+                <Tooltip content={<CustomTooltip yLabel={yLabel} xLabel={xLabel} xAxisFormatter={xAxisFormatter}/>} />  
             </ComposedChart>
         </ResponsiveContainer>
       </div>);

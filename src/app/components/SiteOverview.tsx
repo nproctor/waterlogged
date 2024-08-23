@@ -20,16 +20,18 @@ const SiteOverview = ({todaysValues, todaysStats} : Props) => {
             <br></br>
             <span className="section-title">Current Value:</span>
             <table className="details-site-overview details-site-overview-table">
-                <tr>
-                    <th>Last Updated</th>
-                    <th>{todaysValues.variable.variableName}</th>
-                    <th>Percentile</th>
-                </tr>
-                <tr>
-                    <td>{todaysValues.variable.values.at(-1)?.dateTime.toLocaleString()}</td>
-                    <td>{todaysValues.variable.values.at(-1)?.value}</td>
-                    <td style={{background: getColorFromPercentile(percentile) }}>{percentile?.toFixed(1)}</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <th>Last Updated</th>
+                        <th>{todaysValues.variable.variableName}</th>
+                        <th>Percentile</th>
+                    </tr>
+                    <tr>
+                        <td>{todaysValues.variable.values.at(-1)?.dateTime.toLocaleString()}</td>
+                        <td>{todaysValues.variable.values.at(-1)?.value}</td>
+                        <td style={{background: getColorFromPercentile(percentile) }}>{percentile?.toFixed(1)}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     );
