@@ -34,13 +34,13 @@ const PercentileGraph = ({todaysStats, todaysValues}: Props) => {
                                 {value: "Current", type: "circle", color: getColorFromPercentile(percentile)}]} 
                                 verticalAlign="top"
                                 wrapperStyle={{padding: 10}} />
-                <Line type="monotone" dataKey={(v) => v.value} stroke="black" />
+                <Line type="linear" dataKey={(v) => v.value} stroke="black" />
                 <Scatter data={todaysStats}>
                     {todaysStats.map((v, i) => {
                         return <Cell key={`cell-${i}`} fill={v.estimated? "lightgray" : "gray"}></Cell>
                     })}
                 </Scatter>
-                <ReferenceDot y={recentValue} x={percentile} fill={getColorFromPercentile(percentile)} r={6}/>
+                <ReferenceDot y={recentValue} x={percentile} stroke="black" fill={getColorFromPercentile(percentile)} r={6}/>
     </Graph>)  
 }
 
