@@ -15,7 +15,7 @@ interface Props extends PropsWithChildren{
 }
   
 
-const DateTimeGraph = ({title, data, xAxisFormatter, xKeyMap, yKeyMap, xDomain, xLabel, yLabel, xTicks, children}: Props) => {
+const Graph = ({title, data, xAxisFormatter, xKeyMap, yKeyMap, xDomain, xLabel, yLabel, xTicks, children}: Props) => {
 
   const [rangeScalar, setRangeScalar] = useState<number>(2);
 
@@ -65,4 +65,4 @@ const CustomTooltip = ({active, payload, label, xLabel, yLabel, xAxisFormatter}:
     return null;
   };
 
-export default DateTimeGraph;
+export default Graph;

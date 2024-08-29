@@ -31,7 +31,7 @@ export default function Page( {params: {id}} : Props) {
                     <DailyValueGraph todaysValues={todaysValues} todaysStats={todaysStats}/>
 
                     {/* Percentile Graph */}
-                    <PercentileGraph todaysStats={todaysStats} />
+                    <PercentileGraph todaysStats={todaysStats} todaysValues={todaysValues} />
                     {/* Weekly Trend */}
 
                     {/* Yearly Trend */}

@@ -1,22 +1,26 @@
-import { Scatter, Cell, Legend, Tooltip, ScatterChart, Line} from 'recharts';
-import { WaterStatisticValue } from '@/app/types/types';
+import { Scatter, Cell, Legend, Tooltip, ScatterChart, Line, ReferenceDot} from 'recharts';
+import { WaterData, WaterDataVariable, WaterStatisticValue } from '@/app/types/types';
 import { PropsWithChildren, useEffect } from 'react';
-import DateTimeGraph from '@/app/components/DateTimeGraph';
+import Graph from '@/app/components/Graph';
+import { getColorFromPercentile, getPercentile } from '../scripts/interpolate';
 
 
 interface Props extends PropsWithChildren{
-    todaysStats : WaterStatisticValue[]
+    todaysStats : WaterStatisticValue[],
+    todaysValues: WaterData,
 }
   
 
-const PercentileGraph = ({todaysStats}: Props) => {
+const PercentileGraph = ({todaysStats, todaysValues}: Props) => {
+    const recentValue = todaysValues.variable.values.at(-1)?.value;
+    const percentile = recentValue ? getPercentile(recentValue, todaysStats) : undefined;
 
     const xAxisFormatter = (value : number, index: number) => {
         return `${value}%`;
     }
 
     return (
-        <DateTimeGraph title={"Percentile"}
+        <Graph title={"Percentile"}
                        data = {todaysStats} 
                        xAxisFormatter={xAxisFormatter}
                        xKeyMap={(v : WaterStatisticValue) => {return (v.percentile)}}
@@ -25,17 +29,19 @@ const PercentileGraph = ({todaysStats}: Props) => {
                        xDomain={[0,100]}
                        yLabel={"Streamflow, ft^3/s"}
                        xTicks={[0,5,10,25,50,75,80,90,95,100]}>
-            <Legend payload={[{value: "Actual", type: "circle", color: "var(--color-water-max)"}, 
-                                  {value: "Estimated", type: "circle", color: "var(--color-water-min)"}]} 
-                                  verticalAlign="top"
-                                  wrapperStyle={{padding: 10}} />
+            <Legend payload={[{value: "Actual", type: "circle", color: "gray"}, 
+                                {value: "Estimated", type: "circle", color: "lightgray"},
+                                {value: "Current", type: "circle", color: getColorFromPercentile(percentile)}]} 
+                                verticalAlign="top"
+                                wrapperStyle={{padding: 10}} />
                 <Line type="monotone" dataKey={(v) => v.value} stroke="black" />
                 <Scatter data={todaysStats}>
                     {todaysStats.map((v, i) => {
-                        return <Cell key={`cell-${i}`} fill={v.estimated? "var(--color-water-min)" : "var(--color-water-max)"}></Cell>
+                        return <Cell key={`cell-${i}`} fill={v.estimated? "lightgray" : "gray"}></Cell>
                     })}
                 </Scatter>
-    </DateTimeGraph>)  
+                <ReferenceDot y={recentValue} x={percentile} fill={getColorFromPercentile(percentile)} r={6}/>
+    </Graph>)  
 }
 
 export default PercentileGraph;

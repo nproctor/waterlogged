@@ -1,7 +1,7 @@
 import { ReferenceArea, Legend, Area} from 'recharts';
 import { WaterData, WaterStatistic } from '@/app/types/types';
 import { PropsWithChildren, useEffect } from 'react';
-import DateTimeGraph from '@/app/components/DateTimeGraph';
+import Graph from '@/app/components/Graph';
 
 
 interface Props extends PropsWithChildren{
@@ -30,7 +30,7 @@ const AnnualValueGraph = ({allTimeStats}: Props) => {
 
     
     return (
-        <DateTimeGraph title={"Annual Values"}
+        <Graph title={"Annual Values"}
                        data = {allTimeStats} 
                        xAxisFormatter={xAxisFormatter}
                        xKeyMap={(v : WaterStatistic) => {return (v.day) + daysElapsedByMonth[v.month]}}
@@ -39,7 +39,7 @@ const AnnualValueGraph = ({allTimeStats}: Props) => {
                        xTicks={Array.from(Object.keys(daysElapsedByMonth), (v) => daysElapsedByMonth[parseInt(v)] + 1)}
                        yLabel={"Streamflow, ft^3/s"}>
             <Area type="monotone" dataKey={(v : WaterStatistic) => {return v.values[5].value}} fillOpacity={1} fill="#8884d8" stroke="#8884d8" />
-    </DateTimeGraph>)
+        </Graph>)
 }
 
 export default AnnualValueGraph;

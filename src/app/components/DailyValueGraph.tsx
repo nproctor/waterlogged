@@ -1,7 +1,7 @@
 import { ReferenceArea, Legend, Line} from 'recharts';
 import { WaterData, WaterDataVariableValue, WaterStatisticValue } from '@/app/types/types';
 import { PropsWithChildren, useEffect } from 'react';
-import DateTimeGraph from '@/app/components/DateTimeGraph';
+import Graph from '@/app/components/Graph';
 
 const MINUTES_IN_HOUR = 60;
 const HOURS_IN_DAY = 24;
@@ -28,7 +28,7 @@ const DailyValueGraph = ({todaysValues, todaysStats}: Props) => {
 
 
     return (
-        <DateTimeGraph title={"Todays Values"}
+        <Graph title={"Todays Values"}
                        data={todaysValues.variable.values} 
                        xAxisFormatter={xAxisFormatter}
                        xKeyMap={timeMap}
@@ -52,7 +52,7 @@ const DailyValueGraph = ({todaysValues, todaysStats}: Props) => {
             <ReferenceArea y1={todaysStats[6].value} y2={todaysStats[8].value} fill="var(--color-water-high)" ifOverflow="hidden"/>  
             <ReferenceArea y1={todaysStats[8].value} y2={todaysStats[10].value} fill="var(--color-water-max)" ifOverflow="hidden"/>
 
-        </DateTimeGraph>)
+        </Graph>)
 }
 
 export default DailyValueGraph;
