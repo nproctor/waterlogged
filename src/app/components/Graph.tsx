@@ -8,7 +8,7 @@ interface Props extends PropsWithChildren{
     xAxisFormatter: (value: number, index: number) => string,
     xKeyMap: (v : any) => number,
     yKeyMap?: (v: any) => number,
-    xDomain: [number, number],
+    xDomain?: [number, number],
     xLabel: string,
     yLabel : string,
     xTicks? : number[],

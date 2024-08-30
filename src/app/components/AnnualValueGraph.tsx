@@ -11,7 +11,7 @@ interface Props extends PropsWithChildren{
 }
 
 interface ComboType {
-    day: number,
+    day: Date,
     alltime: number | undefined,
     lastyear: number | undefined,
 }
@@ -19,26 +19,19 @@ interface ComboType {
 const AnnualValueGraph = ({allTimeStats, dailyValuesYear, todaysValues}: Props) => {
     
     const [comboData, setComboData] = useState<ComboType[]>([]);
-
-
-    const dayOfYear = (date: Date) => {
-
-        const daysElapsedByMonth : { [key: number]: number } = {
-            0: 0, 1: 31, 2: 60, 3: 91, 4: 121, 5: 152, 6: 182, 7: 213, 8: 244, 9: 274, 10: 305, 11: 335
-        }
-        return daysElapsedByMonth[date.getMonth()] + date.getDate();
-    }
     
     const processData = (allTimeStats: WaterStatistic[], dailyValuesYear: WaterData) => {
         const data : ComboType[] = [];
-        for (let i = 0; i < 365; i ++){
-            let x = allTimeStats.find((v) => dayOfYear(v.dateTime) === i);
-            let y = dailyValuesYear.variable.values.find((v) =>  dayOfYear(v.dateTime) === i)
-            data.push({day: i, alltime: x?.values[5].value, lastyear: y?.value})
+    
+        for (let i = 1; i < 366; i ++){
+            const d = new Date(0, 0, i);
+            let x = allTimeStats.find((v) => v.dateTime.getMonth() === d.getMonth() && v.dateTime.getDate() === d.getDate());
+            let y = dailyValuesYear.variable.values.find((v) =>  v.dateTime.getMonth() === d.getMonth() && v.dateTime.getDate() === d.getDate())
+            data.push({day: d, alltime: x?.values[5].value, lastyear: y?.value})
         }
-        let val = data.find((v) => v.day === dayOfYear(todaysValues.variable.values[0].dateTime));
-        if (val)
-            val.lastyear = todaysValues.variable.values[0].value;
+        let latestValue = todaysValues.variable.values[0]
+        let val = data.find((v) => v.day.getDate() === latestValue.dateTime.getDate() && v.day.getMonth() === latestValue.dateTime.getMonth());
+        val ? val.lastyear = todaysValues.variable.values[0].value : null ;
         setComboData(data);
     }
 
@@ -46,38 +39,25 @@ const AnnualValueGraph = ({allTimeStats, dailyValuesYear, todaysValues}: Props) 
         processData(allTimeStats, dailyValuesYear);
     }, []);
 
-    // const xAxisFormatter = (daysElapsed : number, index: number) => {
-    //     let month = 1;
-    //     let day = 0;
-    //     Object.keys(daysElapsedByMonth).forEach( (v) => {
-    //         let pairMonth = parseInt(v);
-    //         let pairDays = daysElapsedByMonth[pairMonth]; 
-    //         if (pairDays < daysElapsed && pairDays > day){
-    //             day = pairDays;
-    //             month = pairMonth;
-    //         }
-    //     });
-    //     return `${month}/${daysElapsed - day}`;
-    // }
-
-
-    const xAxisFormatter = (v: number, i: number) => {
-        return `${v}`;
+    const xAxisFormatter = (value : number, index: number) => {
+        let date = new Date(value);
+        return `${date.getMonth() + 1}/${date.getDate()}`;
     }
+
 
     
     return (
         <Graph title={"Annual Values"}
                        data = {comboData} 
                        xAxisFormatter={xAxisFormatter}
-                       xKeyMap={(v : ComboType) => v.day}
+                       xKeyMap={(v : ComboType) => v.day.valueOf()}
                        xLabel={"Day"}
-                       xDomain={[1,366]}
-                    //    xTicks={Array.from(Object.keys(daysElapsedByMonth), (v) => daysElapsedByMonth[parseInt(v)] + 1)}
+                       xDomain={[new Date(0, 0, 1).valueOf(), new Date(0, 11, 31).valueOf()]}
+                       xTicks={Array.from({length: 12}, (v, i) => (new Date(0, i, 1)).valueOf() )}
                        yLabel={"Streamflow, ft^3/s"}>
             <Area type="monotone" dataKey={(v) => v.alltime} fillOpacity={1} fill="lightgray" stroke="lightgray"/>
             <Line dataKey={(v) => v.lastyear} stroke="black" dot={false}/>
-            <ReferenceDot x={dayOfYear(todaysValues.variable.values[0].dateTime)}
+            <ReferenceDot x={new Date(0, todaysValues.variable.values[0].dateTime.getMonth(), todaysValues.variable.values[0].dateTime.getDate()).valueOf()}
                         y={todaysValues.variable.values[0].value} 
                         r={5}
                         fill='black'

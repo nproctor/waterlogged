@@ -12,7 +12,7 @@ const useFetchData = (id: number) => {
     useEffect( () => {
 
         // 365 day daily values
-        getSiteDailyValues(id, 364)
+        getSiteDailyValues(id, 365)
         .then((res) => {
             setDailyValuesYear(res)
         })
