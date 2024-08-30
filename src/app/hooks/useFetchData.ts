@@ -12,7 +12,7 @@ const useFetchData = (id: number) => {
     useEffect( () => {
 
         // 365 day daily values
-        getSiteDailyValues(id, 365)
+        getSiteDailyValues(id, 364)
         .then((res) => {
             setDailyValuesYear(res)
         })
@@ -23,7 +23,7 @@ const useFetchData = (id: number) => {
 
         // Returns true if the day is today and false otherwise
         const isToday = (data: WaterStatistic) => {
-            if (data.day === date.getDate() && data.month === (date.getMonth() + 1))
+            if (data.dateTime.getDate() === date.getDate() && data.dateTime.getMonth() === (date.getMonth()))
                 return true;
             return false;
         }

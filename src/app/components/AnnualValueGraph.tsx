@@ -20,17 +20,25 @@ const AnnualValueGraph = ({allTimeStats, dailyValuesYear, todaysValues}: Props) 
     
     const [comboData, setComboData] = useState<ComboType[]>([]);
 
-    const daysElapsedByMonth : { [key: number]: number } = {
-        1: 0, 2: 31, 3: 60, 4: 91, 5: 121, 6: 152, 7: 182, 8: 213, 9: 244, 10: 274, 11: 305, 12: 335
+
+    const dayOfYear = (date: Date) => {
+
+        const daysElapsedByMonth : { [key: number]: number } = {
+            0: 0, 1: 31, 2: 60, 3: 91, 4: 121, 5: 152, 6: 182, 7: 213, 8: 244, 9: 274, 10: 305, 11: 335
+        }
+        return daysElapsedByMonth[date.getMonth()] + date.getDate();
     }
     
     const processData = (allTimeStats: WaterStatistic[], dailyValuesYear: WaterData) => {
         const data : ComboType[] = [];
         for (let i = 0; i < 365; i ++){
-            let x = allTimeStats.find((v) => v.day + daysElapsedByMonth[v.month] === i);
-            let y = dailyValuesYear.variable.values.find((v) => v.dateTime.getDate() + daysElapsedByMonth[v.dateTime.getMonth() + 1] === i)
+            let x = allTimeStats.find((v) => dayOfYear(v.dateTime) === i);
+            let y = dailyValuesYear.variable.values.find((v) =>  dayOfYear(v.dateTime) === i)
             data.push({day: i, alltime: x?.values[5].value, lastyear: y?.value})
         }
+        let val = data.find((v) => v.day === dayOfYear(todaysValues.variable.values[0].dateTime));
+        if (val)
+            val.lastyear = todaysValues.variable.values[0].value;
         setComboData(data);
     }
 
@@ -65,17 +73,21 @@ const AnnualValueGraph = ({allTimeStats, dailyValuesYear, todaysValues}: Props) 
                        xKeyMap={(v : ComboType) => v.day}
                        xLabel={"Day"}
                        xDomain={[1,366]}
-                       xTicks={Array.from(Object.keys(daysElapsedByMonth), (v) => daysElapsedByMonth[parseInt(v)] + 1)}
+                    //    xTicks={Array.from(Object.keys(daysElapsedByMonth), (v) => daysElapsedByMonth[parseInt(v)] + 1)}
                        yLabel={"Streamflow, ft^3/s"}>
             <Area type="monotone" dataKey={(v) => v.alltime} fillOpacity={1} fill="lightgray" stroke="lightgray"/>
             <Line dataKey={(v) => v.lastyear} stroke="black" dot={false}/>
-            <ReferenceDot x={daysElapsedByMonth[todaysValues.variable.values[0].dateTime.getMonth() + 1] + todaysValues.variable.values[0].dateTime.getDate()}
+            <ReferenceDot x={dayOfYear(todaysValues.variable.values[0].dateTime)}
                         y={todaysValues.variable.values[0].value} 
                         r={5}
                         fill='black'
                         stroke="black">
                             <Label position="top">Today</Label>
                         </ReferenceDot>
+            <Legend payload={[{value: "All Time Median", type: "square", color: "lightgray"}, 
+                    {value: "Last Year's Values", type: "line", color: "black"}]}
+                    verticalAlign="top"
+                    wrapperStyle={{padding: 10}} />
         </Graph>)
 }
 

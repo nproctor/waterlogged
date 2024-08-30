@@ -58,8 +58,7 @@ export interface WaterDataVariableValue {
 }
 
 export interface WaterStatistic {
-    day: number,
-    month: number,
+    dateTime: Date,
     values: WaterStatisticValue[];
 }
 

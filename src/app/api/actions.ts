@@ -145,7 +145,7 @@ const parseStatisticalData = (response: string) : WaterStatistic[] => {
             waterStat[10] = {percentile: 100, value: parseInt(row[maxIdx]), estimated: false};
             const month = parseInt(row[monthIdx]);
             const day = parseInt(row[dayIdx])
-            waterStatisticData.push({month: month, day: day, values: waterStat});
+            waterStatisticData.push({dateTime: new Date(0, month - 1, day), values: waterStat});
         }
     });
 
