@@ -71,7 +71,7 @@ export const linearInterpolation = (x1 : number, x2: number, x: number, y1: numb
    * @param value: the Stream Flow value whose percentile is being percentile
    * @param stats: the WaterStatsValue[] that contains the percentiles that are to be used for the estimatation
    */
-export const getPercentile = (value: number, stats: WaterStatisticValue[]) => {
+export const getPercentile = (value: number, stats: WaterStatisticValue[]) : number => {
     // Ensure they are sorted
     const sorted = stats.sort((a, b) => a.percentile - b.percentile);
     // Find the percentiles that the value is between
@@ -89,10 +89,10 @@ export const getPercentile = (value: number, stats: WaterStatisticValue[]) => {
         }
     });
     // If it's equal to the largest smaller value, return that percentile
-    if (v1 === value)
+    if (v1 === value && p1)
         return p1;
     // If it's equal to the smallest larger value, return that percentil
-    if (v2 === value)
+    if (v2 === value && p2)
         return p2;
     // smallest value ever recorded
     if (v1 === undefined || p1 === undefined)

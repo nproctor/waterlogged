@@ -1,6 +1,6 @@
 import { Scatter, Cell, Legend, Tooltip, ScatterChart, Line, ReferenceDot, Label} from 'recharts';
 import { WaterData, WaterDataVariable, WaterStatisticValue } from '@/app/types/types';
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import Graph from '@/app/components/Graph';
 import { getColorFromPercentile, getPercentile } from '../scripts/interpolate';
 
@@ -13,10 +13,17 @@ interface Props extends PropsWithChildren{
 
 const PercentileGraph = ({todaysStats, todaysValues}: Props) => {
     const recentValue = todaysValues.variable.values.at(-1)?.value;
-    const percentile = recentValue ? getPercentile(recentValue, todaysStats) : undefined;
+    const [percentile, setPercentile] = useState<number>(NaN);
+
+    useEffect( () => {
+        if (recentValue){
+            const p = getPercentile(recentValue, todaysStats)
+            setPercentile(p);
+        }
+    }, [])
 
     const xAxisFormatter = (value : number, index: number) => {
-        return `${value}%`;
+        return `${value.toFixed(0)}%`;
     }
 
     return (
@@ -28,7 +35,7 @@ const PercentileGraph = ({todaysStats, todaysValues}: Props) => {
                        xLabel={"Percentile"}
                        xDomain={[0,100]}
                        yLabel={"Streamflow, ft^3/s"}
-                       xTicks={[0,5,10,25,50,75,80,90,95,100]}>
+                       xTicks={[0,5,10,20,25,50,75,80,90,95,100]}>
             <Legend payload={[{value: "Actual", type: "circle", color: "gray"}, 
                                 {value: "Estimated", type: "circle", color: "lightgray"}]} 
                                 verticalAlign="top"
