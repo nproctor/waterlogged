@@ -4,10 +4,10 @@ import { PropsWithChildren, useState } from 'react';
 
 interface Props extends PropsWithChildren{
     title: string,
-    data: WaterStatistic[] | WaterDataVariableValue[] | WaterStatisticValue[],
+    data: any[];
     xAxisFormatter: (value: number, index: number) => string,
-    xKeyMap: ((v : WaterDataVariableValue) => number) | ((v : WaterStatistic) => number) | ((v : WaterStatisticValue) => number),
-    yKeyMap?: ((v : WaterDataVariableValue) => number) | ((v : WaterStatistic) => number) | ((v : WaterStatisticValue) => number),
+    xKeyMap: (v : any) => number,
+    yKeyMap?: (v: any) => number,
     xDomain: [number, number],
     xLabel: string,
     yLabel : string,

@@ -4,17 +4,17 @@ import { WaterData, WaterDataVariableValue, WaterStatistic, WaterStatisticValue 
 import { interpolateWaterStatisticValues } from '@/app/scripts/interpolate';
 
 const useFetchData = (id: number) => {
-    const [dailyValues, setDailyValues] = useState<WaterData | null>(null);
     const [todaysValues, setTodaysValues]= useState<WaterData | null>(null);
     const [allTimeStats, setAllTimeStats] = useState<WaterStatistic[] | null>(null);
     const [todaysStats, setTodaysStats] = useState<WaterStatisticValue[] | null>(null);
+    const [dailyValuesYear, setDailyValuesYear] = useState<WaterData | null>(null);
 
     useEffect( () => {
 
-        // 7 day daily values
-        getSiteDailyValues(id, 7)
+        // 365 day daily values
+        getSiteDailyValues(id, 365)
         .then((res) => {
-            setDailyValues(res)
+            setDailyValuesYear(res)
         })
 
         // Values since midnight
@@ -45,7 +45,7 @@ const useFetchData = (id: number) => {
 
     }, []);
 
-    return {dailyValues, todaysValues, allTimeStats, todaysStats};
+    return {dailyValuesYear, todaysValues, allTimeStats, todaysStats};
 }
 
 export default useFetchData;

@@ -14,12 +14,12 @@ interface Props {
 }
 
 export default function Page( {params: {id}} : Props) {
-    const {dailyValues, todaysValues, allTimeStats, todaysStats } = useFetchData(id);
+    const {dailyValuesYear, todaysValues, allTimeStats, todaysStats } = useFetchData(id);
 
     return (
         <div className="details">
           {
-           dailyValues &&
+           dailyValuesYear &&
            todaysValues &&
            allTimeStats &&
            todaysStats ? 
@@ -35,7 +35,7 @@ export default function Page( {params: {id}} : Props) {
                     {/* Weekly Trend */}
 
                     {/* Yearly Trend */}
-                    <AnnualValueGraph allTimeStats={allTimeStats}/>
+                    <AnnualValueGraph allTimeStats={allTimeStats} dailyValuesYear={dailyValuesYear} todaysValues={todaysValues}/>
                     
                   </div> : 
                   <div className="details-loading">
