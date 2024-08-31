@@ -28,7 +28,7 @@ const CustomControl = (props : PropsWithChildren<Props>) => {
         }
         controlInstance.addTo(map);
         return () => {controlInstance.remove()}; 
-    }, [map])
+    }, [map, props.position])
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();

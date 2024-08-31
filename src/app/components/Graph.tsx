@@ -57,7 +57,7 @@ const CustomTooltip = ({active, payload, label, xLabel, yLabel, xAxisFormatter}:
           <p className="xvalue"> {xAxisFormatter(label, 0)} </p>
           <br></br>
           <p className="ylabel"> {yLabel} </p>
-          {payload.map((p) => { return <p className="yvalue" style={{color: p.stroke}}> {p.value}</p>})}
+          {payload.map((p, i) => { return <p key={`tooltip-${i}`} className="yvalue" style={{color: p.stroke}}> {p.value}</p>})}
         </div>
       );
     }

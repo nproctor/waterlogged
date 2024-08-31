@@ -43,7 +43,7 @@ const useFetchData = (id: number) => {
             }
         });
 
-    }, []);
+    }, [id]);
 
     return {dailyValuesYear, todaysValues, allTimeStats, todaysStats};
 }

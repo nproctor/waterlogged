@@ -20,7 +20,7 @@ const PercentileGraph = ({todaysStats, todaysValues}: Props) => {
             const p = getPercentile(recentValue, todaysStats)
             setPercentile(p);
         }
-    }, [])
+    }, [recentValue, todaysStats])
 
     const xAxisFormatter = (value : number, index: number) => {
         return `${value.toFixed(0)}%`;

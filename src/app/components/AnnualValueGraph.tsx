@@ -37,7 +37,7 @@ const AnnualValueGraph = ({allTimeStats, dailyValuesYear, todaysValues}: Props) 
 
     useEffect( () => {
         processData(allTimeStats, dailyValuesYear);
-    }, []);
+    }, [allTimeStats, dailyValuesYear]);
 
     const xAxisFormatter = (value : number, index: number) => {
         let date = new Date(value);
