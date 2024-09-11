@@ -89,7 +89,7 @@ const mapVariableSchema = (point : WaterServicesResponseData) : WaterDataVariabl
         unit : point.variable.unit.unitCode,
         values : 
             point.values[0].value.map((v) => {
-                return {value: parseFloat(v.value), 
+                return {value: checkParser(v.value), 
                         dateTime: new Date(v.dateTime)}
             })
         
@@ -132,17 +132,17 @@ const parseStatisticalData = (response: string) : WaterStatistic[] => {
         const row = line.split("\t");
         if (row.length > 1){
             const waterStat : WaterStatisticValue[] = [];
-            waterStat[0] = {percentile: 0, value: parseInt(row[minIdx]), estimated: false},
-            waterStat[1] = {percentile: 5, value: parseInt(row[p05Idx]), estimated: false},
-            waterStat[2] = {percentile: 10, value: parseInt(row[p10Idx]), estimated: false},
-            waterStat[3] = {percentile: 20, value: parseInt(row[p20Idx]), estimated: false},
-            waterStat[4] = {percentile: 25, value: parseInt(row[p25Idx]), estimated: false},
-            waterStat[5] = {percentile: 50, value: parseInt(row[p50Idx]), estimated: false},
-            waterStat[6] = {percentile: 75, value: parseInt(row[p75Idx]), estimated: false},
-            waterStat[7] = {percentile: 80, value: parseInt(row[p80Idx]), estimated: false},
-            waterStat[8] = {percentile: 90, value: parseInt(row[p90Idx]), estimated: false},
-            waterStat[9] = {percentile: 95, value: parseInt(row[p95Idx]), estimated: false}
-            waterStat[10] = {percentile: 100, value: parseInt(row[maxIdx]), estimated: false};
+            waterStat[0] = {percentile: 0, value: checkParser(row[minIdx]), estimated: false},
+            waterStat[1] = {percentile: 5, value: checkParser(row[p05Idx]), estimated: false},
+            waterStat[2] = {percentile: 10, value: checkParser(row[p10Idx]), estimated: false},
+            waterStat[3] = {percentile: 20, value: checkParser(row[p20Idx]), estimated: false},
+            waterStat[4] = {percentile: 25, value: checkParser(row[p25Idx]), estimated: false},
+            waterStat[5] = {percentile: 50, value: checkParser(row[p50Idx]), estimated: false},
+            waterStat[6] = {percentile: 75, value: checkParser(row[p75Idx]), estimated: false},
+            waterStat[7] = {percentile: 80, value: checkParser(row[p80Idx]), estimated: false},
+            waterStat[8] = {percentile: 90, value: checkParser(row[p90Idx]), estimated: false},
+            waterStat[9] = {percentile: 95, value: checkParser(row[p95Idx]), estimated: false}
+            waterStat[10] = {percentile: 100, value: checkParser(row[maxIdx]), estimated: false};
             const month = parseInt(row[monthIdx]);
             const day = parseInt(row[dayIdx])
             waterStatisticData.push({dateTime: new Date(0, month - 1, day), values: waterStat});
@@ -150,4 +150,11 @@ const parseStatisticalData = (response: string) : WaterStatistic[] => {
     });
 
     return waterStatisticData;
+}
+
+const checkParser = (value: string) => {
+    let parsed = parseFloat(value);
+    if (parsed < 0)
+        return NaN;
+    return parsed;
 }
